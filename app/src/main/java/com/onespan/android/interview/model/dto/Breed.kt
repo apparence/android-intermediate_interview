@@ -1,4 +1,4 @@
-package com.onespan.android.interview.model
+package com.onespan.android.interview.model.dto
 
 data class Breed(
     var breed: String? = null,

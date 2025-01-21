@@ -1,9 +1,9 @@
 package com.onespan.android.interview.main.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.onespan.android.interview.model.Breed
+import com.onespan.android.interview.model.Result
+import com.onespan.android.interview.model.dto.Breed
 import com.onespan.android.interview.retrofit.ApiServiceImpl
 
 class BreedPagingSource(
@@ -15,13 +15,20 @@ class BreedPagingSource(
         return try {
             val currentPage = params.key ?: 1
             val response = apiServiceImpl.getBreeds(limit, currentPage)
-            val breeds = response.body()?.breeds
 
-            LoadResult.Page(
-                data = breeds ?: mutableListOf(),
-                prevKey = if (response.body()?.currentPage == 1) null else currentPage - 1,
-                nextKey = if (currentPage < (response.body()?.lastPage ?: 0)) currentPage + 1 else null
-            )
+            if (response is Result.Success) {
+                val breeds = response.body?.breeds
+
+                LoadResult.Page(
+                    data = breeds ?: mutableListOf(),
+                    prevKey = if (response.body?.currentPage == 1) null else currentPage - 1,
+                    nextKey = if (currentPage < (response.body?.lastPage
+                            ?: 0)
+                    ) currentPage + 1 else null
+                )
+            } else {
+                LoadResult.Error(Throwable((response as Result.GenericError).errorMessage.message))
+            }
         } catch (e: Exception) {
             LoadResult.Error(e)
         }

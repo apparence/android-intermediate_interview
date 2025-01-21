@@ -6,29 +6,34 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Observer
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.onespan.android.interview.AndroidIntermediateInterviewTheme
 import com.onespan.android.interview.R
 import com.onespan.android.interview.main.viewmodel.MainActivityViewModel
-import com.onespan.android.interview.model.Breed
+import com.onespan.android.interview.model.dto.Breed
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.flowOf
 
@@ -55,10 +60,30 @@ fun ScreenContent(
 ) {
     val breeds by rememberUpdatedState(newValue = mainActivityViewModel.uiState.collectAsLazyPagingItems())
     mainActivityViewModel.getBreed()
-    CatBreeds(
-        modifier = Modifier.fillMaxSize(),
-        breeds
-    )
+
+    Scaffold(
+        topBar = { TopBar() },
+        modifier = Modifier.fillMaxSize()
+    ) { innerPadding ->
+        val loadState = breeds.loadState
+        when {
+            ((loadState.refresh is LoadState.Loading && breeds.itemCount == 0)) ||
+                    loadState.append is LoadState.Loading -> {
+                DisplayLoader()
+            }
+            (loadState.hasError) -> {
+                DisplayErrorMessage(loadState.refresh as LoadState.Error)
+            }
+
+            else -> {
+                DisplayLazyList(
+                    modifier = Modifier.fillMaxSize(),
+                    innerPadding,
+                    breeds
+                )
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,45 +93,76 @@ fun TopBar() {
 }
 
 @Composable
-fun CatBreeds(
+fun DisplayErrorMessage(error: LoadState.Error) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(error.error.message ?: "", color = colorResource(R.color.red_error))
+    }
+}
+
+@Composable
+fun DisplayLoader() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(
+            strokeWidth = dimensionResource(R.dimen.dp_8),
+            color = colorResource(R.color.teal_700)
+        )
+    }
+}
+
+@Composable
+fun DisplayLazyList(
     modifier: Modifier = Modifier,
+    innerPadding: PaddingValues,
     breeds: LazyPagingItems<Breed>
 ) {
-    Scaffold(
-        topBar = { TopBar() },
-        modifier = Modifier.fillMaxSize()
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = modifier.padding(innerPadding),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(breeds.itemCount) { index ->
-                val breed = breeds[index]
-                breed?.let {
-                    Text(text = breed.breed ?: "")
-                    Text(text = breed.country ?: "")
-                    Text(text = breed.origin ?: "")
-                    Text(text = breed.coat ?: "")
-                    Text(text = breed.pattern ?: "")
-                }
+    LazyColumn(
+        modifier = modifier.padding(innerPadding),
+        contentPadding = PaddingValues(dimensionResource(R.dimen.dp_16)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.dp_16))
+    ) {
+        items(breeds.itemCount) { index ->
+            breeds[index]?.let { breed ->
+                DisplayBreed(breed)
             }
         }
     }
+
+}
+
+@Composable
+fun DisplayBreed(breed: Breed) {
+    Text(text = breed.breed ?: "")
+    Text(text = breed.country ?: "")
+    Text(text = breed.origin ?: "")
+    Text(text = breed.coat ?: "")
+    Text(text = breed.pattern ?: "")
+    HorizontalDivider(modifier = Modifier.fillMaxSize(), color = colorResource(R.color.black))
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ScreenContentPreview() {
     AndroidIntermediateInterviewTheme {
-        CatBreeds(modifier = Modifier.fillMaxSize(),
-            flowOf(PagingData.from(mutableListOf(
-                Breed("breed", "country", "origin", "coat", "patter"),
-                Breed("breed", "country", "origin", "coat", "patter"),
-                Breed("breed", "country", "origin", "coat", "patter"),
-                Breed("breed", "country", "origin", "coat", "patter"),
-                Breed("breed", "country", "origin", "coat", "patter"),
-                ))).collectAsLazyPagingItems()
+        DisplayLazyList(
+            modifier = Modifier.fillMaxSize(),
+            innerPadding = PaddingValues(dimensionResource(R.dimen.dp_16)),
+            flowOf(
+                PagingData.from(
+                    mutableListOf(
+                        Breed("breed", "country", "origin", "coat", "patter"),
+                        Breed("breed", "country", "origin", "coat", "patter"),
+                        Breed("breed", "country", "origin", "coat", "patter"),
+                        Breed("breed", "country", "origin", "coat", "patter"),
+                        Breed("breed", "country", "origin", "coat", "patter"),
+                    )
+                )
+            ).collectAsLazyPagingItems()
         )
     }
 }

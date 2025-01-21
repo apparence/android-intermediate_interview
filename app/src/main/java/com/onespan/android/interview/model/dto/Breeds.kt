@@ -1,4 +1,4 @@
-package com.onespan.android.interview.model
+package com.onespan.android.interview.model.dto
 
 import com.google.gson.annotations.SerializedName
 

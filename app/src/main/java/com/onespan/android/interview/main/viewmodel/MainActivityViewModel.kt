@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.onespan.android.interview.main.paging.BreedPagingSource
-import com.onespan.android.interview.model.Breed
+import com.onespan.android.interview.model.dto.Breed
 import com.onespan.android.interview.retrofit.ApiServiceImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -23,8 +23,10 @@ class MainActivityViewModel @Inject constructor(
     private val coroutineScope: CoroutineScope
 ) : ViewModel() {
 
-    private val flow = Pager(PagingConfig(pageSize = 20)) {
-        BreedPagingSource(apiService,20)
+    private val limit = 20
+
+    private val flow = Pager(PagingConfig(pageSize = limit)) {
+        BreedPagingSource(apiService, limit)
     }.flow
 
     private val _uiState = MutableStateFlow<PagingData<Breed>>(PagingData.empty())

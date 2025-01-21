@@ -1,12 +1,10 @@
 package com.onespan.android.interview.module
 
-import com.onespan.android.interview.retrofit.ApiService
 import com.onespan.android.interview.retrofit.ApiServiceImpl
 import com.onespan.android.interview.retrofit.RetrofitBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,8 +21,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApiService(): ApiServiceImpl { return ApiServiceImpl(RetrofitBuilder.apiService)
-    }
+    fun provideApiService(): ApiServiceImpl { return ApiServiceImpl(RetrofitBuilder.apiService) }
 
     @Provides
     @Singleton

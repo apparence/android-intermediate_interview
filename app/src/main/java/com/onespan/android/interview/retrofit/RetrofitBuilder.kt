@@ -1,6 +1,5 @@
 package com.onespan.android.interview.retrofit
 
-import androidx.compose.runtime.clearCompositionErrors
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

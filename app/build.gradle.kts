@@ -70,6 +70,8 @@ dependencies {
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
 
+    testImplementation(libs.mockk.test)
+
     // Networking libraries
     implementation(libs.logging.interceptor)
     implementation(libs.kotlinx.coroutines)

@@ -15,6 +15,7 @@ constraintLayout = "1.1.0"
 dagger = "2.51.1"
 interceptor = "4.11.0"
 paging = "3.3.5"
+mockk = "1.13.16"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,6 +44,7 @@ dagger-hilt-android = {group = "com.google.dagger", name = "hilt-android", versi
 logging-interceptor = {group = "com.squareup.okhttp3" , name="logging-interceptor", version.ref="interceptor"}
 paging-runtime = {group = "androidx.paging", name = "paging-runtime", version.ref="paging"}
 paging-compose = {group = "androidx.paging", name = "paging-compose", version.ref="paging"}
+mockk-test = { group ="io.mockk", name = "mockk", version.ref="mockk"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
