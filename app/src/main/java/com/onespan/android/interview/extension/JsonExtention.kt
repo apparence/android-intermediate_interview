@@ -1,4 +1,4 @@
-package com.onespan.android.interview
+package com.onespan.android.interview.extension
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

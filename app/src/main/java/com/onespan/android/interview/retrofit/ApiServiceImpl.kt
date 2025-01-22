@@ -1,6 +1,6 @@
 package com.onespan.android.interview.retrofit
 
-import com.onespan.android.interview.fromGson
+import com.onespan.android.interview.extension.fromGson
 import com.onespan.android.interview.model.Result
 import com.onespan.android.interview.model.dto.Breeds
 import com.onespan.android.interview.model.dto.ErrorResponse
