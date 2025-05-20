@@ -1,4 +1,4 @@
-# OneSpan - Android Intermediate Interview
+# Android Intermediate Interview
 
 We want to evaluate your ability to update a project by applying the **best coding practices**. 
 Keep in mind that we will have a code review session together and that you will have to justify the choices you made.
