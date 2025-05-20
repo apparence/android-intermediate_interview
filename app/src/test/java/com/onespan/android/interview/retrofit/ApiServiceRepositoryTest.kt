@@ -14,13 +14,13 @@ import org.junit.Test
 import retrofit2.Response
 
 
-class ApiServiceImplTest {
+class ApiServiceRepositoryTest {
 
     @MockK
     private lateinit var apiService: ApiService
 
     @InjectMockKs
-    private lateinit var apiServiceImpl: ApiServiceImpl
+    private lateinit var apiServiceImpl: ApiServiceRepository
 
     @Before
     fun setUp() = MockKAnnotations.init(this)

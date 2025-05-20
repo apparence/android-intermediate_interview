@@ -6,7 +6,7 @@ import com.onespan.android.interview.model.dto.Breeds
 import com.onespan.android.interview.model.dto.ErrorResponse
 import javax.inject.Inject
 
-class ApiServiceImpl @Inject constructor(
+class ApiServiceRepository @Inject constructor(
     private val apiService: ApiService
 ) {
 
@@ -17,7 +17,7 @@ class ApiServiceImpl @Inject constructor(
                 if (result.isSuccessful) {
                     Result.Success(it)
                 } else {
-                    Result.GenericError(ErrorResponse( result.code(), result.message()))
+                    Result.GenericError(ErrorResponse(result.code(), result.message()))
                 }
             } ?: run {
                 Result.GenericError(result.errorBody()?.string()?.fromGson()!!)

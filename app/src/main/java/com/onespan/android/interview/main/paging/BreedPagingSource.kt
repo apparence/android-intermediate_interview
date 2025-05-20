@@ -4,10 +4,10 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.onespan.android.interview.model.Result
 import com.onespan.android.interview.model.dto.Breed
-import com.onespan.android.interview.retrofit.ApiServiceImpl
+import com.onespan.android.interview.retrofit.ApiServiceRepository
 
 class BreedPagingSource(
-    private val apiServiceImpl: ApiServiceImpl,
+    private val apiServiceImpl: ApiServiceRepository,
     private val limit: Int,
 ) : PagingSource<Int, Breed>() {
 

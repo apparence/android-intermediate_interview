@@ -1,6 +1,6 @@
 package com.onespan.android.interview.module
 
-import com.onespan.android.interview.retrofit.ApiServiceImpl
+import com.onespan.android.interview.retrofit.ApiServiceRepository
 import com.onespan.android.interview.retrofit.RetrofitBuilder
 import dagger.Module
 import dagger.Provides
@@ -21,7 +21,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApiService(): ApiServiceImpl { return ApiServiceImpl(RetrofitBuilder.apiService) }
+    fun provideApiService(): ApiServiceRepository { return ApiServiceRepository(RetrofitBuilder.apiService) }
 
     @Provides
     @Singleton

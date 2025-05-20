@@ -7,7 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.onespan.android.interview.main.paging.BreedPagingSource
 import com.onespan.android.interview.model.dto.Breed
-import com.onespan.android.interview.retrofit.ApiServiceImpl
+import com.onespan.android.interview.retrofit.ApiServiceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val apiService: ApiServiceImpl,
+    private val apiService: ApiServiceRepository,
     private val coroutineScope: CoroutineScope
 ) : ViewModel() {
 
